@@ -1,0 +1,209 @@
+<!-- empty cart -->
+<div *ngIf="cartItems.length == 0" class="container mt-5 mb-5">
+  <div class="row mt-5">
+    <div class="col mt-5 text-center">
+      <!-- empty cart image  -->
+      <img
+        style="height: 300px"
+        src="https://gifimage.net/wp-content/uploads/2017/11/einkaufswagen-gif-11.gif"
+        alt="empty cart image"
+      />
+      <h3>Your Cart is empty</h3>
+      <button routerLink="" class="btn btn-primary mt-2">Shop More</button>
+    </div>
+  </div>
+</div>
+
+<!-- cart design -->
+<div *ngIf="cartItems.length != 0" class="container mb-5 mt-5">
+  <div class="row mt-5">
+    <div class="col-lg-8 border rounded p-3 mt-5">
+      <!--  cart table -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Product Image</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of cartItems; let i = index">
+            <th>{{ i + 1 }}</th>
+            <th>
+              <!-- https://tse2.mm.bing.net/th?id=OIP.pWAYflr6f31imrqUUQz4kwHaHa&pid=Api&P=0 -->
+              <img
+                class="ms-5"
+                height="50px"
+                width="50px"
+                [src]="product.image"
+                alt="Product image"
+              />
+            </th>
+            <th>
+              <input
+                type="num"
+                class="form-control"
+                value="1"
+                style="max-width: 3rem"
+              />
+            </th>
+            <th>{{ product.price }}</th>
+            <th>
+              <a (click)="removeItem(product)" class="text-danger btn">
+                <i class="fa-solid fa-trash"></i>
+              </a>
+            </th>
+          </tr>
+        </tbody>
+      </table>
+      <div style="float: right">
+        <button (click)="emptyCart()" class="btn btn-danger ms-5">
+          Empty Cart
+        </button>
+        <a routerLink="" class="btn btn-success ms-5">Shop More</a>
+      </div>
+    </div>
+    <div class="col-lg-1"></div>
+    <div class="col-lg-3 rounded p-3 mt-5">
+      <div>
+        <p>
+          Total: <span class="text-success fw-bolder"> {{ grantTotal }} </span>
+        </p>
+        <p>Discount: <span> {{discount}} </span></p>
+        <h5 class="animate__animated animate__shakeX">
+          Grant Total: <span class="text-danger fw-bolder fs-2"> {{discountTotal}} </span>
+        </h5>
+      </div>
+      <hr />
+
+      <div class="mt-2">
+        <a
+          style="text-decoration: none; float: left"
+          class="btn btn-link"
+          data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop"
+          ><i class="fa-solid fa-tag"></i> offers</a
+        >
+        <button style="float: right" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkoutModal">Check Out</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- offer modal design -->
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="staticBackdrop"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5 text-success" id="staticBackdropLabel">
+          <i class="fa-solid fa-tag"></i> Coupons
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <!-- 3% -->
+      <div class="modal-body text-primary">
+        <div  *ngIf="grantTotal>0 && grantTotal<10"  class="d-flex align-items-center">
+          <h5>*All Users can apply*</h5>
+          <img (click)="discount3percent()" data-bs-dismiss="modal"
+            class="ms-auto"
+            width="200px"
+            src="https://tse3.mm.bing.net/th?id=OIP.FQzXdfOKe6FhXEadYeg6UwHaFT&pid=Api&P=0"
+            alt="3% code"
+          />
+        </div>
+
+        <div *ngIf="grantTotal>=10 && grantTotal<=100" class="d-flex align-items-center">
+          <img (click)="discount10percent()" data-bs-dismiss="modal"
+            class="me-auto"
+            width="200px"
+            src="https://www.downloadclipart.net/large/discount-png-image.png"
+            alt="10% code"
+          />
+          <h5>*Special Offers*</h5>
+        </div>
+        <div *ngIf="grantTotal>100" class="d-flex align-items-center">
+          <img (click)="discount50percent()" data-bs-dismiss="modal"
+            class="me-auto"
+            width="200px"
+            src="https://tse4.mm.bing.net/th?id=OIP.I_rwf60DlCT1rsrJ8kle-QHaDt&pid=Api&P=0"
+            alt="50% code"
+          />
+          <h5>*Special Offers*</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- checkout modal -->
+ 
+  <!-- Modal -->
+  <div class="modal fade" id="checkoutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Payment Info</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form class="border p-2">
+            <h5 class="mb-2">Customer Details</h5>
+            <div class="mb-2">
+                <input placeholder="Customer Name" type="text" class="form-control">
+            </div>
+            <div class="mb-2">
+                <input placeholder="Customer Address" type="text" class="form-control">
+            </div>
+            <div class="mb-2">
+                <input placeholder="Customer Pincode" type="text" class="form-control">
+            </div>
+            <div class="mb-2">
+                <input placeholder="Customer Mobile" type="text" class="form-control">
+            </div>
+            <div class="mb-2">
+                <input placeholder="Customer Email" type="text" class="form-control">
+            </div>
+            
+
+          </form>
+          <hr>
+            <h5 class="mb-2">Payment Details</h5>
+            <form class="border p-2">
+                <div class="mb-2">
+                    <input placeholder="Card holder Name" type="text" class="form-control">
+                </div>
+                <div class="mb-2">
+                    <input placeholder="Card Number" type="text" class="form-control">
+                </div>
+                
+            </form>
+            
+        </div>
+        <div class="fw-bolder text-success"> {{checkoutMsg}} </div>
+        <div class="modal-footer">
+            
+            
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" (click)="checkout()" class="btn btn-primary">Make Payment</button>
+        </div>
+      </div>
+    </div>
+  </div>

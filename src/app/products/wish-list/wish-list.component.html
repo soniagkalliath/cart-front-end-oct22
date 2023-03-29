@@ -1,0 +1,42 @@
+<!-- empty wishlist -->
+<div *ngIf="wishlistStatusMsg" class="container mt-5 mb-5" style="margin-top: 100px;">
+    <div class="row">
+        <div class="col mt-5 text-center">
+            <!-- empty wishlist image  -->
+            <img style="height: 300px ;" src="https://gifimage.net/wp-content/uploads/2017/11/einkaufswagen-gif-11.gif" alt="empty wishlist image">
+            <h3 >Your wishlist is empty</h3>
+            <button routerLink="" class="btn btn-primary mt-2">Shop More</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- wishlist Section-->
+<section *ngIf="!wishlistStatusMsg" class="py-5" style="margin-top: 100px;">
+    <div class="container px-4 px-lg-5 ">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            <div class="col mb-5" *ngFor="let product of wishlist">
+                <div class="card h-100 p-3">
+                    <!-- Product image-->
+                    <img height="200px" class="card-img-top" [src]="product.image" alt="..." />
+                    <!-- Product details-->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <h5 class="fw-bolder">{{product.title.slice(0,20)}}...</h5>
+                            <!-- Product price-->
+                            $ {{product.price}}
+                        </div>
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div>
+                            <button (click)="removeItem(product.id)" style="float: left;" class="text-danger btn"> <i class="fa-solid fa-trash fa-fade fa-2x"></i> </button>
+                            <button (click)="addToCart(product)" style="float: right;" class="btn text-success mt-auto" ><i class="fa-solid fa-cart-plus fa-beat fa-2x"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
