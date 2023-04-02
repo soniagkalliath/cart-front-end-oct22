@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from '../services/cart.service';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-cart',
@@ -14,31 +15,126 @@ export class CartComponent implements OnInit{
   discount:number=0
   discountTotal:number=0
   checkoutMsg=""
-  constructor(private cart:CartService,private router:Router){
+  total:number=0
+  decStatus:boolean=false
+  quantity:number=0
+  constructor(private cart:CartService,private router:Router,private api:ApiService){
   }
 
   ngOnInit(): void {
-    this.cart.cartItemList.subscribe(
-      (data:any)=>{
-        this.cartItems = data
+
+    this.getCart()
+  //   this.cart.cartItemList.subscribe(
+  //     (data:any)=>{
+  //       this.cartItems = data
+  //     }
+  //   )
+  //     let total = this.cart.grantTotal()
+  //     this.grantTotal = Number(total.toFixed(2))
+  //     this.discountTotal = this.grantTotal
+  }
+
+  //get cat
+  getCart(){
+    this.api.getCart().subscribe(
+      (result:any)=>{
+        this.cartItems = result
+        this.getCartItemCount()
+        
+        this.getTotal()
+      },
+      (result:any)=>{
+        alert(result.error)
       }
     )
-      let total = this.cart.grantTotal()
-      this.grantTotal = Number(total.toFixed(2))
-      this.discountTotal = this.grantTotal
   }
+
+  //get total
+   getTotal(){
+    if(this.cartItems){
+      this.cartItems.forEach((item:any)=>{
+        this.total+= item.grantTotal
+        this.grantTotal = Number(this.total.toFixed(2))
+        this.discountTotal = this.grantTotal
+      })
+    }
+    
+   }
+
+   getCartItemCount(){
+    this.cartItems.forEach((item:any)=>{
+      this.quantity+= item.quantity
+      this.cart.cartItemList.next(this.quantity)
+     })
+   }
+
+
+   //increment cart item quantity
+   incCartItem(productId:any){
+    this.api.incCartItem(productId).subscribe(
+      (result:any)=>{
+        this.cartItems = result
+       
+        let updatedItem =this.cartItems.find((item:any)=>item.id==productId)
+        this.quantity += 1
+        this.cart.cartItemList.next(this.quantity)
+        this.grantTotal += updatedItem.price
+        this.discountTotal = this.grantTotal
+      },
+      (result:any)=>{
+        alert(result.error)
+      }
+    )
+   }
+
+     //decrement cart item quantity
+     decCartItem(productId:any){
+      this.api.decCartItem(productId).subscribe(
+        (result:any)=>{
+          this.cartItems = result
+          
+          let updatedItem =this.cartItems.find((item:any)=>item.id==productId)
+          if(!updatedItem){
+            this.decStatus=true
+            this.getCart()
+            window.location.reload()
+          }
+          this.quantity -= 1
+        this.cart.cartItemList.next(this.quantity)
+          this.grantTotal -= updatedItem.price
+          this.discountTotal = this.grantTotal
+        },
+        (result:any)=>{
+          alert(result.error)
+        }
+      )
+     }
+
   //removeItem(product)
   removeItem(product:any){
-    this.cart.removeCartItem(product)
-    let total = this.cart.grantTotal()
-    this.grantTotal = Number(total.toFixed(2))
-    this.discountTotal = this.grantTotal
-
+    this.api.removeCartItem(product.id)
+    .subscribe((result:any)=>{
+      this.cartItems =result
+      if(this.cartItems.length==0){
+        this.cart.cartItemList.next(0)
+      }
+      else{
+        this.getCartItemCount()
+      }
+      
+    })
   }
 
   //emptyCart()
   emptyCart(){
-    this.cart.removeCart()
+    this.api.emptyCart().subscribe((result:any)=>{
+      this.cart.cartItemList.next(0)
+      window.location.reload()
+    },
+    
+    (result:any)=>{
+      alert(result.error)
+    })
   }
 
   //discount3percent()

@@ -18,7 +18,7 @@ export class WishListComponent implements OnInit{
     this.api.getWishlist()
     .subscribe(
       (result:any)=>{
-        this.wishlist = result.wishlist
+        this.wishlist = result
         if(this.wishlist.length==0){
           this.wishlistStatusMsg='wishlist empty'
         }
@@ -38,7 +38,7 @@ export class WishListComponent implements OnInit{
     .subscribe(
       //200
       (result:any)=>{
-        this.wishlist = result.wishlist
+        this.wishlist = result
         console.log(this.wishlist);
         if(this.wishlist.length==0){
           this.wishlistStatusMsg='wishlist empty'
@@ -47,7 +47,7 @@ export class WishListComponent implements OnInit{
     },
     //400
     (result:any)=>{
-      alert(result.error.message)
+      alert(result.error)
     }
     )
   }

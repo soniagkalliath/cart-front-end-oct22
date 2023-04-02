@@ -43,14 +43,19 @@
               />
             </th>
             <th>
-              <input
-                type="num"
-                class="form-control"
-                value="1"
-                style="max-width: 3rem"
-              />
+              <div class="d-flex align-items-center">
+                <button [disabled]="decStatus" (click)="decCartItem(product.id)" class="btn fw-bolder me-1"> - </button>
+                <input
+                  type="num"
+                  class="form-control"
+                  value={{product.quantity}}
+                  style="max-width: 3rem"
+                  readonly
+                />
+                <button (click)="incCartItem(product.id)" class="btn fw-bolder ms-1"> + </button>
+              </div>
             </th>
-            <th>{{ product.price }}</th>
+            <th>{{ product.grantTotal }}</th>
             <th>
               <a (click)="removeItem(product)" class="text-danger btn">
                 <i class="fa-solid fa-trash"></i>

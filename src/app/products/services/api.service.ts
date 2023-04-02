@@ -26,7 +26,15 @@ export class ApiService {
 
   //add-to-wishlist api call
   addtowishlist(product:any){
-    return this.http.post('http://localhost:3000/add-to-wishlist',product)
+    const body={
+      id:product.id,
+      title:product.title,
+      price:product.price,
+      description:product.description,
+      category:product.category,
+      image:product.image
+    }
+    return this.http.post('http://localhost:3000/products/add-to-wishlist',body)
   }
 
   //get-wishlist api call
@@ -36,7 +44,43 @@ export class ApiService {
 
   //remove-item-wishlist/:productId api call
   removeItemFromWishlist(productId:any){
-    return this.http.delete('http://localhost:3000/remove-item-wishlist/'+productId)
+    return this.http.delete('http://localhost:3000/wishlist/remove-item/'+productId)
   }
 
+  //products/add-to-cart
+  addtocart(product:any){
+    const body={
+      id:product.id,
+      title:product.title,
+      price:product.price,
+      image:product.image,
+      quantity:product.quantity
+    }
+    return this.http.post('http://localhost:3000/products/add-to-cart',body)
+  }
+
+  //get-cart
+  getCart(){
+    return  this.http.get('http://localhost:3000/get-cart')
+    }
+
+    //cart/increment-item/:id
+    incCartItem(id:any){
+      return  this.http.get('http://localhost:3000/cart/increment-item/'+id)
+    }
+
+    //cart/decrement-item/:id
+    decCartItem(id:any){
+      return  this.http.get('http://localhost:3000/cart/decrement-item/'+id)
+    }
+
+    //cart/remove-item/:id
+    removeCartItem(id:any){
+      return  this.http.delete('http://localhost:3000/cart/remove-item/'+id)
+    }
+
+    //emoty cart
+    emptyCart(){
+      return  this.http.delete('http://localhost:3000/empty-cart')
+    }
 }

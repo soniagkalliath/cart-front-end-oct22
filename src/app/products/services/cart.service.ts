@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 export class CartService {
   
   cartItemArray:any=[]
-  cartItemList = new BehaviorSubject([])
+  cartItemList = new BehaviorSubject(0)
 
   constructor() { }
 

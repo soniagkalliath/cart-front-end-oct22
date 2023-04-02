@@ -16,10 +16,17 @@ export class HeaderComponent implements OnInit{
   }
 
   ngOnInit(): void {
+
+    // this.api.getCart().subscribe(
+    //   (result:any)=>{
+    //     result.forEach((item:any)=>this.cartItemCount+=item.quantity)
+    //   }
+    // )
+
     this.cart.cartItemList.subscribe(
       (data:any)=>{
         console.log(data);
-        this.cartItemCount = data.length
+        this.cartItemCount = data
       }
     )
   }

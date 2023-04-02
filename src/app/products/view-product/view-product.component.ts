@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { CartService } from '../services/cart.service';
 
@@ -12,7 +12,7 @@ export class ViewProductComponent implements OnInit {
 
   productId:any;
   viewProduct:any;
-  constructor(private activatedRoute:ActivatedRoute,private api:ApiService,private cart:CartService){
+  constructor(private activatedRoute:ActivatedRoute,private api:ApiService,private cart:CartService,private router:Router){
 
   }
 
@@ -36,17 +36,32 @@ export class ViewProductComponent implements OnInit {
     this.api.addtowishlist(product)
     .subscribe(
       (result:any)=>{
-      alert(result.message)
+      alert(result)
     },
     (result:any)=>{
-      alert(result.error.message)
+      alert(result.error)
     }
     )
   }
 
   //addToCart(viewProduct)
   addToCart(product:any){
-    this.cart.addToCart(product)
+    Object.assign(product,{quantity:1});
+    console.log(product);
+    
+   // this.cart.addToCart(product)
+   this.api.addtocart(product)
+   .subscribe(
+    (result:any)=>{
+      console.log(result);
+      
+      alert(result)
+     
+    },
+    (result:any)=>{
+      alert(result.error)
+    }
+   )
   }
 
 }
