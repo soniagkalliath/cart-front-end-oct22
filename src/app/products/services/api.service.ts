@@ -16,12 +16,12 @@ export class ApiService {
 
   //all-products api
   getAllProducts(){
-  return  this.http.get('http://localhost:3000/products/all-products')
+  return  this.http.get('https://meancart.onrender.com/products/all-products')
   }
   
   //view-product api
   viewProduct(productId:any){
-   return this.http.get('http://localhost:3000/products/'+productId)
+   return this.http.get('https://meancart.onrender.com/products/'+productId)
   }
 
   //add-to-wishlist api call
@@ -34,17 +34,17 @@ export class ApiService {
       category:product.category,
       image:product.image
     }
-    return this.http.post('http://localhost:3000/products/add-to-wishlist',body)
+    return this.http.post('https://meancart.onrender.com/products/add-to-wishlist',body)
   }
 
   //get-wishlist api call
   getWishlist(){
-    return this.http.get('http://localhost:3000/get-wishlist')
+    return this.http.get('https://meancart.onrender.com/get-wishlist')
   }
 
   //remove-item-wishlist/:productId api call
   removeItemFromWishlist(productId:any){
-    return this.http.delete('http://localhost:3000/wishlist/remove-item/'+productId)
+    return this.http.delete('https://meancart.onrender.com/wishlist/remove-item/'+productId)
   }
 
   //products/add-to-cart
@@ -56,31 +56,31 @@ export class ApiService {
       image:product.image,
       quantity:product.quantity
     }
-    return this.http.post('http://localhost:3000/products/add-to-cart',body)
+    return this.http.post('https://meancart.onrender.com/products/add-to-cart',body)
   }
 
   //get-cart
   getCart(){
-    return  this.http.get('http://localhost:3000/get-cart')
+    return  this.http.get('https://meancart.onrender.com/get-cart')
     }
 
     //cart/increment-item/:id
     incCartItem(id:any){
-      return  this.http.get('http://localhost:3000/cart/increment-item/'+id)
+      return  this.http.get('https://meancart.onrender.com/cart/increment-item/'+id)
     }
 
     //cart/decrement-item/:id
     decCartItem(id:any){
-      return  this.http.get('http://localhost:3000/cart/decrement-item/'+id)
+      return  this.http.get('https://meancart.onrender.com/cart/decrement-item/'+id)
     }
 
     //cart/remove-item/:id
     removeCartItem(id:any){
-      return  this.http.delete('http://localhost:3000/cart/remove-item/'+id)
+      return  this.http.delete('https://meancart.onrender.com/cart/remove-item/'+id)
     }
 
     //emoty cart
     emptyCart(){
-      return  this.http.delete('http://localhost:3000/empty-cart')
+      return  this.http.delete('https://meancart.onrender.com/empty-cart')
     }
 }
